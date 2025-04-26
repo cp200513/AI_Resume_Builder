@@ -27,7 +27,7 @@ model Resume {
   borderStyle String  @default("squircle")
 
   summary   String?
-  firstName String?
+  firstName String? //@@map("first_name") can also map like this
   lastName  String?
 
   jobTitle String?
@@ -38,6 +38,7 @@ model Resume {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  //we can also map column names also
 
-  @@map("resumes")
+  @@map("resumes") //Postgres Sql's naming convention is all small but of Prisma is like (1) so we map that name to this 
 }

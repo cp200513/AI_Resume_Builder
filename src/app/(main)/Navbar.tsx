@@ -6,6 +6,7 @@ import Image from "next/image";
 import logo from "@/assets/logo.png";
 import { UserButton } from "@clerk/nextjs";
 import { CreditCard } from "lucide-react";
+import ThemeToggle from "../../components/ThemeToggle";
 
 const Navbar = () => {
   return (
@@ -23,24 +24,27 @@ const Navbar = () => {
             AI Resume Builder
           </span>
         </Link>
-        <UserButton
-          appearance={{
-            elements: {
-              avatarBox: {
-                width: 35,
-                height: 35,
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: {
+                  width: 35,
+                  height: 35,
+                },
               },
-            },
-          }}
-        >
-          <UserButton.MenuItems>
-            <UserButton.Link
-              label="Billing"
-              labelIcon={<CreditCard className="size-4" />}
-              href="/billing"
-            />
-          </UserButton.MenuItems>
-        </UserButton>
+            }}
+          >
+            <UserButton.MenuItems>
+              <UserButton.Link
+                label="Billing"
+                labelIcon={<CreditCard className="size-4" />}
+                href="/billing"
+              />
+            </UserButton.MenuItems>
+          </UserButton>
+        </div>
       </div>
     </header>
   );

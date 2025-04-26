@@ -158,7 +158,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -168,16 +168,17 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgres://neondb_owner:npg_AKIBTh89PMQt@ep-wandering-surf-a1oeej44-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\n// prisma/schema.prisma\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Resume {\n  id     String @id @default(cuid())\n  userId String\n\n  title       String\n  description String\n\n  photoUrl    String?\n  colorHex    String  @default(\"#000000\")\n  borderStyle String  @default(\"squircle\")\n\n  summary   String?\n  firstName String?\n  lastName  String?\n\n  jobTitle String?\n  city     String?\n  country  String?\n  phone    String?\n  email    String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@map(\"resumes\")\n}\n",
-  "inlineSchemaHash": "17d0897aa824b4510a41a2951e2cf6e22318c817253f14c774a41d2492ccfa8e",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\n// prisma/schema.prisma\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Resume {\n  id     String @id @default(cuid())\n  userId String\n\n  title       String\n  description String\n\n  photoUrl    String?\n  colorHex    String  @default(\"#000000\")\n  borderStyle String  @default(\"squircle\")\n\n  summary   String?\n  firstName String? //@@map(\"first_name\") can also map like this\n  lastName  String?\n\n  jobTitle String?\n  city     String?\n  country  String?\n  phone    String?\n  email    String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  //we can also map column names also\n\n  @@map(\"resumes\") //Postgres Sql's naming convention is all small but of Prisma is like (1) so we map that name to this \n}\n",
+  "inlineSchemaHash": "0c55af37d3ae7a0e4c21ba6618a051b9c38100b3527610135d65ab0b37f08ff8",
   "copyEngine": true
 }
 
