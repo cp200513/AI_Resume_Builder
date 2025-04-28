@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Button } from "../../../components/ui/button";
+import GeneralInfoForm from "./forms/GeneralInfoForm";
 
 const EditorPage = () => {
   return (
@@ -15,7 +16,9 @@ const EditorPage = () => {
       </header>
       <main className="relative grow">
         <div className="absolute top-0 bottom-0 flex w-full">
-          <div className="w-full md:w-1/2">left</div>
+          <div className="w-full md:w-1/2">
+            <GeneralInfoForm />
+          </div>
           <div className="grow border-r" />
           <div className="hidden w-1/2 md:flex">right</div>
         </div>
