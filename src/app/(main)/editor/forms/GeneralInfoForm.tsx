@@ -49,10 +49,33 @@ const GeneralInfoForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="username"
+              name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title :</FormLabel>
+                  <FormLabel>Project Name : </FormLabel>
+                  <FormControl>
+                    <Input placeholder="My Resume" {...field} autoFocus />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              {...form}
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Project Description : </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="This is a Resume for the role of ...."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Describe what your resume is for...
+                  </FormDescription>
                 </FormItem>
               )}
             />
