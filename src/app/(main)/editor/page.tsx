@@ -7,6 +7,7 @@ import PersonalInfoForm from "./forms/PersonalInfoForm";
 import { useSearchParams } from "next/navigation";
 import { steps } from "./steps";
 import BreadCrumbs from "./BreadCrumbs";
+import Footer from "./Footer";
 
 const EditorPage = () => {
   const searchParams = useSearchParams();
@@ -49,18 +50,7 @@ const EditorPage = () => {
           <div className="hidden w-1/2 md:flex">right</div>
         </div>
       </main>
-      <footer className="w-full border-t px-3 py-5">
-        <div className="mx-auto flex flex-wrap justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <Button variant="outline">Previous Step</Button>
-            <Button>Next Step</Button>
-          </div>
-          <div className="flex items-center gap-3">
-            <Button variant="destructive">Close</Button>
-            <p className="text-muted-foreground text-sm opacity-0">Saving...</p>
-          </div>
-        </div>
-      </footer>
+      <Footer currentStep={currentStep} setCurrentStep={setStep} />
     </div>
   );
 };
