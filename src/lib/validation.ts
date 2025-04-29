@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { optionalString } from "./validation";
 
 export const optionalString = z.string().trim().optional().or(z.literal(""));
 
@@ -33,9 +32,26 @@ export const personalInfoSchema = z.object({
 
 export const personalInfoSchemaType = z.infer<typeof personalInfoSchema>;
 
+export const workExperienceSchema = z.object({
+  workExperiences: z
+    .array(
+      z.object({
+        position: optionalString,
+        company: optionalString,
+        startDate: optionalString,
+        endDate: optionalString,
+        description: optionalString,
+      }),
+    )
+    .optional(),
+});
+
+export type workExperienceSchemaType = z.infer<typeof workExperienceSchema>;
+
 export const resumeSchema = z.object({
   ...generalInfoSchema.shape,
   ...personalInfoSchema.shape,
+  ...workExperienceSchema.shape,
 });
 
 export type resumeSchemaType = Omit<z.infer<typeof resumeSchema>, "photo"> & {

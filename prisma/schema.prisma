@@ -36,6 +36,8 @@ model Resume{ //<= (1)
   phone String?
   email String?
 
+  workExperiences WorkExperience[] 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -44,3 +46,22 @@ model Resume{ //<= (1)
   //we can also map column names also
 
 }
+
+model WorkExperience{
+  id String @id @default(cuid())
+
+  position String?
+  company String?
+  startDate String?
+  endDate String?
+  description String?
+
+  resumeID String
+  resume Resume @relation(fields:[resumeID],references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("work_experience")
+
+} 

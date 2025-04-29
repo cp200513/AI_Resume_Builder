@@ -9,6 +9,7 @@ import { useState } from "react";
 
 import Footer from "./Footer";
 import { resumeSchemaType } from "../../../lib/validation";
+import WorkExperiencesForm from "./forms/WorkExperiencesForm";
 
 const EditorPage = () => {
   const searchParams = useSearchParams();
@@ -53,6 +54,11 @@ const EditorPage = () => {
                 setResumeData={setResumeData}
               />
             )}
+
+            {/* <WorkExperiencesForm
+              resumeData={resumeData}
+              setResumeData={setStep} */}
+            {/* /> */}
           </div>
           <div className="grow border-r" />
           <div className="hidden w-1/2 md:flex">
