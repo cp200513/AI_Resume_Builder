@@ -42,7 +42,7 @@ const PersonalInfoForm = () => {
   return (
     <div className="max-x-xl mx-auto space-y-6">
       <div className="space-y-0.5 text-center">
-        <h2 className="mt-2 font-serif text-2xl">Personal Info</h2>
+        <h2 className="mt-2 font-serif text-3xl">Personal Info</h2>
         <p className="text-muted-foreground mt-0.5 text-sm">
           Tell us about Yourself
         </p>

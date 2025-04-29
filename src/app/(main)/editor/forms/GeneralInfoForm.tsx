@@ -33,7 +33,7 @@ const GeneralInfoForm = () => {
   return (
     <div>
       <div className="mt-1 flex flex-col items-center justify-center gap-2">
-        <h2 className="mt-1 space-y-0.5 from-neutral-600 font-serif">
+        <h2 className="mt-1 space-y-0.5 from-neutral-600 font-serif text-3xl">
           General Info
         </h2>
         <div className="w-3/4 border" />
@@ -69,13 +69,10 @@ const GeneralInfoForm = () => {
                   <FormLabel>Project Description : </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="This is a Resume for the role of ...."
+                      placeholder="Eg : This is a Resume for the role of ...."
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Describe what your resume is for...
-                  </FormDescription>
                 </FormItem>
               )}
             />

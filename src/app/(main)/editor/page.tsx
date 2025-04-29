@@ -4,8 +4,29 @@ import React from "react";
 import { Button } from "../../../components/ui/button";
 import GeneralInfoForm from "./forms/GeneralInfoForm";
 import PersonalInfoForm from "./forms/PersonalInfoForm";
+import { useSearchParams } from "next/navigation";
+import { steps } from "./steps";
+import BreadCrumbs from "./BreadCrumbs";
 
 const EditorPage = () => {
+  const searchParams = useSearchParams();
+  const currentStep = searchParams.get("step") || steps[0].key;
+
+  function setStep(key: string) {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("step", key);
+    //we could use Router.push also but that makes things slower since it send request to server
+    window.history.pushState(
+      null,
+      "",
+      `${window.location.pathname}?${newSearchParams.toString()}`,
+    ); //this pushes the url immediatly
+  }
+
+  const FormComponent = steps.find(
+    (step) => step.key === currentStep,
+  )?.component;
+
   return (
     <div className="flex grow flex-col">
       <header className="space-y-1.5 border-b px-3 py-6 text-center">
@@ -17,9 +38,12 @@ const EditorPage = () => {
       </header>
       <main className="relative grow">
         <div className="absolute top-0 bottom-0 flex w-full">
-          <div className="w-full md:w-1/2">
+          <div className="w-full pt-2 md:w-1/2">
             {/* <GeneralInfoForm /> */}
-            <PersonalInfoForm />
+            {/* <PersonalInfoForm /> */}
+            <BreadCrumbs currentStep={currentStep} setCurrentStep={setStep} />
+            <div className="mt-2 w-full border-b" />
+            {FormComponent && <FormComponent />}
           </div>
           <div className="grow border-r" />
           <div className="hidden w-1/2 md:flex">right</div>
