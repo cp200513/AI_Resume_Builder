@@ -3,6 +3,7 @@
 import React from "react";
 import { Button } from "../../../components/ui/button";
 import GeneralInfoForm from "./forms/GeneralInfoForm";
+import PersonalInfoForm from "./forms/PersonalInfoForm";
 
 const EditorPage = () => {
   return (
@@ -17,7 +18,8 @@ const EditorPage = () => {
       <main className="relative grow">
         <div className="absolute top-0 bottom-0 flex w-full">
           <div className="w-full md:w-1/2">
-            <GeneralInfoForm />
+            {/* <GeneralInfoForm /> */}
+            <PersonalInfoForm />
           </div>
           <div className="grow border-r" />
           <div className="hidden w-1/2 md:flex">right</div>
