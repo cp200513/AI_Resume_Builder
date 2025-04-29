@@ -16,19 +16,26 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { EditorFormProps } from "../../../../lib/types";
+import { useEffect } from "react";
 
-const GeneralInfoForm = () => {
+const GeneralInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<generalInfoSchemaType>({
     resolver: zodResolver(generalInfoSchema),
     defaultValues: {
-      title: "",
-      description: "",
+      title: resumeData.title || "",
+      description: resumeData.description || "",
     },
   });
 
-  const onSubmit = (values: generalInfoSchemaType) => {
-    console.log(values);
-  };
+  // PersonalInfoForm.tsx and GeneralInfoForm.tsx
+
+  useEffect(() => {
+    const { unsubscribe } = form.watch((values) => {
+      setResumeData({ ...resumeData, ...values });
+    });
+    return unsubscribe;
+  }, [form, resumeData, setResumeData]);
 
   return (
     <div>
@@ -46,7 +53,7 @@ const GeneralInfoForm = () => {
 
       <div className="border-b-blue-500 p-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form className="space-y-8">
             <FormField
               control={form.control}
               name="title"

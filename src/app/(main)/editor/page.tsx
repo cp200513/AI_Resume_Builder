@@ -2,16 +2,19 @@
 
 import React from "react";
 import { Button } from "../../../components/ui/button";
-import GeneralInfoForm from "./forms/GeneralInfoForm";
-import PersonalInfoForm from "./forms/PersonalInfoForm";
 import { useSearchParams } from "next/navigation";
 import { steps } from "./steps";
 import BreadCrumbs from "./BreadCrumbs";
+import { useState } from "react";
+
 import Footer from "./Footer";
+import { resumeSchemaType } from "../../../lib/validation";
 
 const EditorPage = () => {
   const searchParams = useSearchParams();
   const currentStep = searchParams.get("step") || steps[0].key;
+
+  const [resumeData, setResumeData] = useState<resumeSchemaType>({});
 
   function setStep(key: string) {
     const newSearchParams = new URLSearchParams(searchParams);
@@ -44,10 +47,17 @@ const EditorPage = () => {
             {/* <PersonalInfoForm /> */}
             <BreadCrumbs currentStep={currentStep} setCurrentStep={setStep} />
             <div className="mt-2 w-full border-b" />
-            {FormComponent && <FormComponent />}
+            {FormComponent && (
+              <FormComponent
+                resumeData={resumeData}
+                setResumeData={setResumeData}
+              />
+            )}
           </div>
           <div className="grow border-r" />
-          <div className="hidden w-1/2 md:flex">right</div>
+          <div className="hidden w-1/2 md:flex">
+            <pre>{JSON.stringify(resumeData, null, 2)}</pre>
+          </div>
         </div>
       </main>
       <Footer currentStep={currentStep} setCurrentStep={setStep} />

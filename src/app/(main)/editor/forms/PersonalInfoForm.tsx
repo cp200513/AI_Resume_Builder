@@ -15,29 +15,30 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { EditorFormProps } from "../../../../lib/types";
 
-const PersonalInfoForm = () => {
+const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
   const form = useForm<personalInfoSchemaType>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      jobtitle: "",
-      city: "",
-      country: "",
-      phone: "",
-      email: "",
+      firstName: resumeData.firstName || "",
+      lastName: resumeData.lastName || "",
+      jobtitle: resumeData.jobtitle || "",
+      city: resumeData.city || "",
+      country: resumeData.country || "",
+      phone: resumeData.phone || "",
+      email: resumeData.email || "",
     },
   });
 
+  // PersonalInfoForm.tsx and GeneralInfoForm.tsx
+
   useEffect(() => {
-    const { unsubscribe } = form.watch(async () => {
-      const isvalid = await form.trigger();
-      if (!isvalid) return;
-      //Update resume
+    const { unsubscribe } = form.watch((values) => {
+      setResumeData({ ...resumeData, ...values });
     });
     return unsubscribe;
-  }, [form]);
+  }, [form, resumeData, setResumeData]);
 
   return (
     <div className="max-x-xl mx-auto space-y-6">
@@ -64,7 +65,7 @@ const PersonalInfoForm = () => {
                       accept="image/*"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
-                        fleldValues.onChange(file);
+                        fieldValues.onChange(file);
                       }}
                     />
                   </FormControl>
