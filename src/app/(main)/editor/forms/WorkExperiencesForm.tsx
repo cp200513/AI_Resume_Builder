@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GripHorizontal } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 const WorkExperiencesForm = ({
   resumeData,
@@ -47,7 +48,7 @@ const WorkExperiencesForm = ({
   });
 
   return (
-    <div className="max-auto space-y--6 max-w-xl">
+    <div className="mx-auto max-h-[70vh] space-y-6 overflow-y-auto">
       <div className="space-y-1.5 text-center">
         <h2 className="mt-1 font-serif text-2xl">Work Experience</h2>
         <p className="text-muted-foreground text-xs">
@@ -172,6 +173,32 @@ const WorkExperienceItem = ({
             )}
           />
         </div>
+
+        <FormDescription>
+          Leave <span className="font-semibold">End Date</span> empty if you are
+          currently working
+        </FormDescription>
+        <FormField
+          control={form.control}
+          name={`workExperiences.${index}.description`}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button
+          className="max-auto"
+          variant="destructive"
+          size="sm"
+          onClick={() => remove(index)}
+        >
+          Remove
+        </Button>
       </div>
     </div>
   );

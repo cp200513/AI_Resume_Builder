@@ -14,7 +14,7 @@ const Navbar = () => {
   const { theme } = useTheme();
   return (
     <header className="rounded-2xl border-2 p-1 shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-xl border-2 p-3">
+      <div className="mx-auto flex items-center justify-between gap-3 rounded-xl border-2 p-3">
         <Link href="/resumes" className="flex items-center gap-2">
           <Image
             src={logo}

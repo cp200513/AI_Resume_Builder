@@ -20,12 +20,11 @@ const EditorPage = () => {
   function setStep(key: string) {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("step", key);
-    //we could use Router.push also but that makes things slower since it send request to server
     window.history.pushState(
       null,
       "",
       `${window.location.pathname}?${newSearchParams.toString()}`,
-    ); //this pushes the url immediatly
+    );
   }
 
   const FormComponent = steps.find(
@@ -33,7 +32,9 @@ const EditorPage = () => {
   )?.component;
 
   return (
-    <div className="flex grow flex-col">
+    <div className="flex min-h-[100vh] flex-col">
+      {" "}
+      {/* Changed min-h-screen to h-screen */}
       <header className="space-y-1.5 border-b px-3 py-6 text-center">
         <h1 className="font-serif text-2xl">Design your Resume</h1>
         <p className="text-muted-foreground text-xs">
@@ -41,11 +42,9 @@ const EditorPage = () => {
           progress will be saved automatically
         </p>
       </header>
-      <main className="relative grow">
-        <div className="absolute top-0 bottom-0 flex w-full">
+      <main className="flex-grow overflow-y-auto pb-12">
+        <div className="flex h-full w-full">
           <div className="w-full pt-2 md:w-1/2">
-            {/* <GeneralInfoForm /> */}
-            {/* <PersonalInfoForm /> */}
             <BreadCrumbs currentStep={currentStep} setCurrentStep={setStep} />
             <div className="mt-2 w-full border-b" />
             {FormComponent && (
@@ -54,14 +53,9 @@ const EditorPage = () => {
                 setResumeData={setResumeData}
               />
             )}
-
-            {/* <WorkExperiencesForm
-              resumeData={resumeData}
-              setResumeData={setStep} */}
-            {/* /> */}
           </div>
           <div className="grow border-r" />
-          <div className="hidden w-1/2 md:flex">
+          <div className="hidden w-1/2 flex-grow overflow-y-auto md:flex">
             <pre>{JSON.stringify(resumeData, null, 2)}</pre>
           </div>
         </div>

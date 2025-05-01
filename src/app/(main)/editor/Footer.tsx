@@ -18,7 +18,7 @@ const Footer = ({ currentStep, setCurrentStep }: FooterProps) => {
   )?.key;
 
   return (
-    <footer className="w-full border-t px-3 py-5">
+    <footer className="sticky bottom-0 w-full flex-shrink-0 border-t px-3 py-5">
       <div className="mx-auto flex flex-wrap justify-between gap-3">
         <div className="flex items-center gap-3">
           <Button
