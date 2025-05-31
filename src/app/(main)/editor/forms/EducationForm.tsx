@@ -1,9 +1,9 @@
+import { Button } from "@/components/ui/button";
+// import { Form } from "@/components/ui/form";
 import { EditorFormProps } from "@/lib/types";
-import {
-  workExperienceSchemaType,
-  workExperienceSchema,
-} from "@/lib/validation";
+import { educationSchema, educationSchemaType } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { GripHorizontal } from "lucide-react";
 import React, { useEffect } from "react";
 import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import {
@@ -16,18 +16,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { GripHorizontal } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
 
-const WorkExperiencesForm = ({
-  resumeData,
-  setResumeData,
-}: EditorFormProps) => {
-  const form = useForm<workExperienceSchemaType>({
-    resolver: zodResolver(workExperienceSchema),
+const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
+  const form = useForm<educationSchemaType>({
+    resolver: zodResolver(educationSchema),
     defaultValues: {
-      workExperiences: resumeData.workExperiences || [],
+      education: resumeData.education || [],
     },
   });
 
@@ -35,8 +29,7 @@ const WorkExperiencesForm = ({
     const { unsubscribe } = form.watch((values) => {
       setResumeData({
         ...resumeData,
-        workExperiences:
-          values.workExperiences?.filter((exp) => exp !== undefined) || [],
+        education: values.education?.filter((edu) => edu !== undefined) || [],
       });
     });
     return unsubscribe;
@@ -44,22 +37,22 @@ const WorkExperiencesForm = ({
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "workExperiences",
+    name: "education",
   });
 
   return (
     <div className="mx-auto flex flex-col">
       <div className="m-3 space-y-1.5 text-center">
-        <h2 className="mt-1 font-serif text-3xl">Work Experience</h2>
+        <h2 className="mt-1 font-serif text-3xl">Education</h2>
         <p className="text-muted-foreground text-xs">
-          Add as many Experiences as you want in your resume...
+          Fill in your Education Details ...
         </p>
         <div className="mx-auto w-3/4 border-b"></div>
       </div>
       <Form {...form}>
         <form className="space-y-2 overflow-y-scroll">
           {fields.map((field, index) => (
-            <WorkExperienceItem
+            <EducationItem
               key={field.id}
               form={form}
               index={index}
@@ -72,15 +65,14 @@ const WorkExperiencesForm = ({
               variant="default"
               onClick={() => {
                 append({
-                  position: "",
-                  company: "",
+                  degree: "",
+                  college: "",
                   startDate: "",
                   endDate: "",
-                  description: "",
                 });
               }}
             >
-              Add More Experience
+              Add More Education
             </Button>
           </div>
         </form>
@@ -89,112 +81,80 @@ const WorkExperiencesForm = ({
   );
 };
 
-export default WorkExperiencesForm;
-
-interface WorkExperienceItemsProps {
-  form: UseFormReturn<workExperienceSchemaType>;
+interface EducationItemProps {
+  form: UseFormReturn<educationSchemaType>;
   index: number;
   remove: (index: number) => void;
 }
 
-const WorkExperienceItem = ({
-  form,
-  index,
-  remove,
-}: WorkExperienceItemsProps) => {
+const EducationItem = ({ form, index, remove }: EducationItemProps) => {
   return (
     <div className="m-3 rounded-2xl border-2">
       <div className="m-2 flex justify-between gap-2 rounded-xl border-2 p-3">
-        <span>Work Experience {index + 1}</span>
+        <span>Education {index + 1}</span>
         <GripHorizontal className="text-muted-foreground size-5 cursor-grab" />
       </div>
       <div className="m-2 flex flex-col justify-between space-y-3 rounded-xl border-2 p-3">
         <FormField
           control={form.control}
-          name={`workExperiences.${index}.position`}
+          name={`education.${index}.degree`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Job Title</FormLabel>
+              <FormLabel>Degree </FormLabel>
               <FormControl>
                 <Input
                   {...field}
                   autoFocus
-                  placeholder="Eg : Junior Software Engineer"
+                  placeholder="Eg : Computer Science and Engineering"
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name={`workExperiences.${index}.company`}
+          name={`education.${index}.college`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Company</FormLabel>
+              <FormLabel>College</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Eg : Google" />
+                <Input
+                  {...field}
+                  placeholder="Eg : Indian Institute of Technology"
+                />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
         <div className="flex flex-row justify-between gap-3">
           <FormField
             control={form.control}
-            name={`workExperiences.${index}.startDate`}
+            name={`education.${index}.startDate`}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Start Date</FormLabel>
                 <FormControl>
-                  <Input
-                    type="date"
-                    {...field}
-                    value={field.value?.slice(0, 10)}
-                  />
+                  <Input {...field} type="date" />
                 </FormControl>
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name={`workExperiences.${index}.endDate`}
+            name={`education.${index}.endDate`}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>End Date</FormLabel>
                 <FormControl>
-                  <Input
-                    type="date"
-                    {...field}
-                    value={field.value?.slice(0, 10)}
-                  />
+                  <Input {...field} type="date" />
                 </FormControl>
               </FormItem>
             )}
           />
         </div>
-
-        <FormDescription>
-          Leave <span className="font-semibold">End Date</span> empty if you are
-          currently working here
-        </FormDescription>
-        <FormField
-          control={form.control}
-          name={`workExperiences.${index}.description`}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <div className="mx-auto">
           <Button
-            className="max-auto"
+            className="mx-auto"
             variant="destructive"
             size="sm"
             onClick={() => remove(index)}
@@ -206,3 +166,5 @@ const WorkExperienceItem = ({
     </div>
   );
 };
+
+export default EducationForm;
