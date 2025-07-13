@@ -6,6 +6,7 @@ import { steps } from "./steps";
 import BreadCrumbs from "./BreadCrumbs";
 import Footer from "./Footer";
 import { resumeSchemaType } from "../../../lib/validation";
+import ResumePreviewSection from "./ResumePreviewSection";
 
 const EditorPage = () => {
   const searchParams = useSearchParams();
@@ -54,10 +55,11 @@ const EditorPage = () => {
           </div>
 
           {/* Preview Section */}
-          <div className="hidden w-1/2 overflow-y-auto border-l p-4 md:flex">
-            <pre className="whitespace-pre-wrap">
-              {JSON.stringify(resumeData, null, 2)}
-            </pre>
+          <div className="hidden w-1/2 md:block">
+            <ResumePreviewSection
+              resumeData={resumeData}
+              setResumeData={setResumeData}
+            />
           </div>
         </div>
       </main>

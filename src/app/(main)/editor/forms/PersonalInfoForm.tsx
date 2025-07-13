@@ -81,7 +81,7 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                   <FormItem>
                     <FormLabel>First Name </FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Eg : Chiranjeev" />
+                      <Input {...field} placeholder="First Name" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -94,7 +94,7 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                   <FormItem>
                     <FormLabel>Last Name </FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Eg : Prasannaa" />
+                      <Input {...field} placeholder="Last Name" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -149,7 +149,7 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
                   <FormControl>
-                    <Input type="tel" {...field} placeholder="+91 1234567890" />
+                    <Input type="tel" {...field} placeholder="+91 123457869" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -162,7 +162,7 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Eg : Chiranjeev@gmail.com" />
+                    <Input {...field} placeholder="Alice@gmail.com" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
