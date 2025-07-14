@@ -46,8 +46,8 @@ const EditorPage = () => {
           {/* Form Section */}
           <div
             className={cn(
-              "flex flex-col pt-2 md:block md:w-1/2",
-              showSmResumePreview && "hidden",
+              "flex flex-col pt-2 md:block",
+              showSmResumePreview ? "hidden w-full" : "block w-full",
             )}
           >
             <BreadCrumbs currentStep={currentStep} setCurrentStep={setStep} />
@@ -66,7 +66,7 @@ const EditorPage = () => {
           <div
             className={cn(
               "w-1/2 md:block",
-              showSmResumePreview ? "block" : "hidden",
+              showSmResumePreview ? "block w-full" : "hidden w-full",
             )}
           >
             <ResumePreviewSection
