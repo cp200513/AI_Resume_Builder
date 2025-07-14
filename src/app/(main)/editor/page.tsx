@@ -7,12 +7,15 @@ import BreadCrumbs from "./BreadCrumbs";
 import Footer from "./Footer";
 import { resumeSchemaType } from "../../../lib/validation";
 import ResumePreviewSection from "./ResumePreviewSection";
+import { cn } from "@/lib/utils";
 
 const EditorPage = () => {
   const searchParams = useSearchParams();
   const currentStep = searchParams.get("step") || steps[0].key;
 
   const [resumeData, setResumeData] = useState<resumeSchemaType>({});
+
+  const [showSmResumePreview, setShowSmResumePreview] = useState(false);
 
   function setStep(key: string) {
     const newSearchParams = new URLSearchParams(searchParams);
@@ -41,7 +44,12 @@ const EditorPage = () => {
       <main className="flex flex-1 overflow-scroll">
         <div className="flex w-full flex-1">
           {/* Form Section */}
-          <div className="flex flex-col pt-2 md:w-1/2">
+          <div
+            className={cn(
+              "flex flex-col pt-2 md:block md:w-1/2",
+              showSmResumePreview && "hidden",
+            )}
+          >
             <BreadCrumbs currentStep={currentStep} setCurrentStep={setStep} />
             <div className="mt-2 w-full border-b" />
             <div className="min-h-0 flex-1 overflow-y-auto">
@@ -55,16 +63,27 @@ const EditorPage = () => {
           </div>
 
           {/* Preview Section */}
-          <div className="hidden w-1/2 md:block">
+          <div
+            className={cn(
+              "w-1/2 md:block",
+              showSmResumePreview ? "block" : "hidden",
+            )}
+          >
             <ResumePreviewSection
               resumeData={resumeData}
               setResumeData={setResumeData}
+              className={cn(showSmResumePreview && "flex")}
             />
           </div>
         </div>
       </main>
 
-      <Footer currentStep={currentStep} setCurrentStep={setStep} />
+      <Footer
+        currentStep={currentStep}
+        setCurrentStep={setStep}
+        showSmResumePreview={showSmResumePreview}
+        setShowSmResumePreview={setShowSmResumePreview}
+      />
     </div>
   );
 };
