@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   personalInfoSchemaType,
   personalInfoSchema,
@@ -8,13 +8,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { EditorFormProps } from "../../../../lib/types";
 
 const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
@@ -28,10 +28,9 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       country: resumeData.country || "",
       phone: resumeData.phone || "",
       email: resumeData.email || "",
+      photo: resumeData.photo || null,
     },
   });
-
-  // PersonalInfoForm.tsx and GeneralInfoForm.tsx
 
   useEffect(() => {
     const { unsubscribe } = form.watch((values) => {
@@ -39,6 +38,8 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
     });
     return unsubscribe;
   }, [form, resumeData, setResumeData]);
+
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="max-x-xl mx-auto space-y-6">
@@ -52,34 +53,55 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       <div className="p-4">
         <Form {...form}>
           <form className="space-y-3">
+            {/* Photo Upload (fixed uncontrolled) */}
             <FormField
               control={form.control}
               name="photo"
-              render={({ field: { values, ...fieldValues } }) => (
-                <FormItem>
-                  <FormLabel>Your Photo</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...fieldValues}
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        fieldValues.onChange(file);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const { value, ...inputProps } = field;
+                return (
+                  <FormItem>
+                    <FormLabel>Your Photo</FormLabel>
+                    <div className="flex items-center gap-2">
+                      <FormControl>
+                        <Input
+                          {...inputProps}
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0] ?? null;
+                            field.onChange(file);
+                          }}
+                          ref={photoInputRef}
+                        />
+                      </FormControl>
+                      <Button
+                        variant="secondary"
+                        type="button"
+                        onClick={() => {
+                          field.onChange(null);
+                          if (photoInputRef.current) {
+                            photoInputRef.current.value = "";
+                          }
+                        }}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
+
+            {/* Name fields */}
             <div className="grid grid-cols-2 gap-3">
               <FormField
                 control={form.control}
                 name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>First Name </FormLabel>
+                    <FormLabel>First Name</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="First Name" />
                     </FormControl>
@@ -92,7 +114,7 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Last Name </FormLabel>
+                    <FormLabel>Last Name</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="Last Name" />
                     </FormControl>
@@ -101,12 +123,14 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 )}
               />
             </div>
+
+            {/* Job Title */}
             <FormField
               name="jobtitle"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Job Title </FormLabel>
+                  <FormLabel>Job Title</FormLabel>
                   <FormControl>
                     <Input placeholder="Eg : SDE at Google" {...field} />
                   </FormControl>
@@ -114,6 +138,8 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 </FormItem>
               )}
             />
+
+            {/* Location */}
             <div className="grid grid-cols-2 gap-3">
               <FormField
                 control={form.control}
@@ -142,6 +168,8 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 )}
               />
             </div>
+
+            {/* Contact */}
             <FormField
               name="phone"
               control={form.control}
@@ -174,4 +202,5 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
     </div>
   );
 };
+
 export default PersonalInfoForm;
