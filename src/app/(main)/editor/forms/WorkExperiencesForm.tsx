@@ -38,6 +38,7 @@ import {
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
+import GenerateWorkExperienceButton from "./GenerateWorkExperienceButton";
 
 const WorkExperiencesForm = ({
   resumeData,
@@ -185,6 +186,13 @@ const WorkExperienceItem = ({
         />
       </div>
       <div className="m-2 flex flex-col justify-between space-y-3 rounded-xl border-2 p-3">
+        <div className="flex justify-center">
+          <GenerateWorkExperienceButton
+            onWorkExperienceGenerated={(exp) =>
+              form.setValue(`workExperiences.${index}`, exp)
+            }
+          />
+        </div>
         <FormField
           control={form.control}
           name={`workExperiences.${index}.position`}
