@@ -55,20 +55,24 @@ export async function saveResume(values: resumeSchemaType) {
   const workCreates =
     workExperiences?.map((exp) => ({
       ...exp,
-      startDate: exp.startDate ? new Date(exp.startDate) : undefined,
-      endDate: exp.endDate ? new Date(exp.endDate) : undefined,
+      startDate: exp.startDate
+        ? new Date(exp.startDate).toISOString()
+        : undefined,
+      endDate: exp.endDate ? new Date(exp.endDate).toISOString() : undefined,
     })) ?? [];
   const eduCreates =
     education?.map((edu) => ({
       ...edu,
-      startDate: edu.startDate ? new Date(edu.startDate) : undefined,
-      endDate: edu.endDate ? new Date(edu.endDate) : undefined,
+      startDate: edu.startDate
+        ? new Date(edu.startDate).toISOString()
+        : undefined,
+      endDate: edu.endDate ? new Date(edu.endDate).toISOString() : undefined,
     })) ?? [];
 
   if (id) {
     // update existing record
     return prisma.resume.update({
-      where: { id },
+      where: { id: id },
       data: {
         title,
         description,
@@ -77,7 +81,7 @@ export async function saveResume(values: resumeSchemaType) {
         photoUrl: newPhotoUrl,
         workExperiences: { deleteMany: {}, create: workCreates },
         educations: { deleteMany: {}, create: eduCreates },
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       },
     });
   }

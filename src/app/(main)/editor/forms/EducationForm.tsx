@@ -116,7 +116,7 @@ const EducationForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               onClick={() => {
                 append({
                   degree: "",
-                  college: "",
+                  school: "",
                   startDate: "",
                   endDate: "",
                 });
@@ -187,14 +187,14 @@ const EducationItem = ({ id, form, index, remove }: EducationItemProps) => {
         />
         <FormField
           control={form.control}
-          name={`education.${index}.college`}
+          name={`education.${index}.school`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>College</FormLabel>
+              <FormLabel>school</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="Eg : Indian Institute of Technology"
+                  placeholder="Eg : ABC school of Engineering"
                 />
               </FormControl>
             </FormItem>
