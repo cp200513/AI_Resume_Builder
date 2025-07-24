@@ -24,7 +24,7 @@ const Navbar = () => {
             className="full"
           />
           <span className="font font-serif text-xl tracking-tight">
-            AI Resume Builder
+            Career Craft AI
           </span>
         </Link>
         <div className="flex items-center gap-3">
