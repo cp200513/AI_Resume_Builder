@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { steps } from "./steps";
 import BreadCrumbs from "./BreadCrumbs";
@@ -11,6 +11,7 @@ import { cn, mapToresumeSchemaType } from "@/lib/utils";
 import useUnloadWarning from "@/components/hooks/useUnloadWarning";
 import useAutoSaveResume from "./useAutoSaveResume";
 import { ResumeServerData } from "@/lib/types";
+import { useReactToPrint } from "react-to-print"; // This import is crucial
 
 interface ResumeEditorProps {
   resumeToEdit: ResumeServerData | null;
@@ -20,8 +21,30 @@ const ResumeEditor = ({ resumeToEdit }: ResumeEditorProps) => {
   const searchParams = useSearchParams();
   const currentStep = searchParams.get("step") || steps[0].key;
 
+  // Initialize resumeData with a default empty object that satisfies resumeSchemaType
   const [resumeData, setResumeData] = useState<resumeSchemaType>(
-    resumeToEdit ? mapToresumeSchemaType(resumeToEdit) : {},
+    resumeToEdit
+      ? mapToresumeSchemaType(resumeToEdit)
+      : {
+        // Provide default/empty values for all fields from resumeSchemaType
+        title: "",
+        description: "",
+        photo: undefined, // Or null, depending on your schema's exact nullable/optional definition for photo
+        firstName: "",
+        lastName: "",
+        jobtitle: "",
+        city: "",
+        country: "",
+        phone: "",
+        email: "",
+        workExperiences: [], // Initialize arrays as empty arrays
+        education: [], // Initialize arrays as empty arrays
+        skills: [], // Initialize arrays as empty arrays
+        summary: "",
+        colorHex: "#000000", // Default value from schema.prisma and validation.ts
+        borderStyle: "squircle", // Default value from schema.prisma and validation.ts
+        id: undefined, // id is optional
+      },
   );
 
   const [showSmResumePreview, setShowSmResumePreview] = useState(false);
@@ -29,6 +52,14 @@ const ResumeEditor = ({ resumeToEdit }: ResumeEditorProps) => {
   const { isSaving, hasUnsavedChanges } = useAutoSaveResume(resumeData);
 
   useUnloadWarning(hasUnsavedChanges);
+
+  // Create a ref for the printable content
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handlePrint = useReactToPrint({
+    content: () => contentRef.current, // This is correct usage
+    documentTitle: resumeData.title || "Resume",
+  } as any); // <--- ADDED 'as any' HERE
 
   function setStep(key: string) {
     const newSearchParams = new URLSearchParams(searchParams);
@@ -86,6 +117,7 @@ const ResumeEditor = ({ resumeToEdit }: ResumeEditorProps) => {
               resumeData={resumeData}
               setResumeData={setResumeData}
               className={cn(showSmResumePreview && "flex")}
+              contentRef={contentRef} // Pass the ref here
             />
           </div>
         </div>
@@ -97,6 +129,7 @@ const ResumeEditor = ({ resumeToEdit }: ResumeEditorProps) => {
         showSmResumePreview={showSmResumePreview}
         setShowSmResumePreview={setShowSmResumePreview}
         isSaving={isSaving}
+      // onPrintClick={handlePrint} // Pass the print function here
       />
     </div>
   );

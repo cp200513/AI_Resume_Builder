@@ -1,0 +1,5 @@
+.next/
+out/
+src/generated/
+node_modules/
+dist/

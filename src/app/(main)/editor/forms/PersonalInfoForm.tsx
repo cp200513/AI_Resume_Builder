@@ -1,9 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useRef } from "react";
-import {
-  personalInfoSchemaType,
-  personalInfoSchema,
-} from "../../../../lib/validation";
+import { personalInfoSchema } from "../../../../lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -16,9 +13,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { EditorFormProps } from "../../../../lib/types";
+import * as z from "zod";
+
+type PersonalInfoFormValues = z.infer<typeof personalInfoSchema>;
 
 const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
-  const form = useForm<personalInfoSchemaType>({
+  const form = useForm<PersonalInfoFormValues>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
       firstName: resumeData.firstName || "",
@@ -28,7 +28,13 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       country: resumeData.country || "",
       phone: resumeData.phone || "",
       email: resumeData.email || "",
-      photo: resumeData.photo || null,
+      // FIX FOR PHOTO:
+      // If resumeData.photo is a File, use it directly.
+      // If resumeData.photo is a string (URL), it should be undefined or null for the form's defaultValues,
+      // as the file input doesn't "display" a URL. It should only accept a File object.
+      // If it's null, it can be null.
+      photo: resumeData.photo instanceof File ? resumeData.photo : undefined, // <--- MODIFIED HERE
+      // Or if your schema allows null: photo: resumeData.photo instanceof File ? resumeData.photo : null,
     },
   });
 
@@ -53,7 +59,7 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
       <div className="p-4">
         <Form {...form}>
           <form className="space-y-3">
-            {/* Photo Upload (fixed uncontrolled) */}
+            {/* Photo Upload */}
             <FormField
               control={form.control}
               name="photo"
@@ -79,9 +85,9 @@ const PersonalInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                         variant="secondary"
                         type="button"
                         onClick={() => {
-                          field.onChange(null);
+                          field.onChange(null); // Explicitly set to null when removing
                           if (photoInputRef.current) {
-                            photoInputRef.current.value = "";
+                            photoInputRef.current.value = ""; // Clear file input value
                           }
                         }}
                       >

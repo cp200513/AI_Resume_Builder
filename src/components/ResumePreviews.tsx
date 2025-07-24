@@ -1,46 +1,62 @@
-import { BorderStyles } from "@/app/(main)/editor/BorderStyleButton";
+import { BorderStyles } from "@/app/(main)/editor/BorderStyleButton"; // Ensure this path is correct
 import { cn } from "@/lib/utils";
 import { resumeSchemaType } from "@/lib/validation";
-import React, { useEffect, useRef, useState } from "react";
-import useDimensions from "./hooks/useDimensions";
+import React, { forwardRef, useEffect, useRef, useState } from "react"; // <--- Import forwardRef
+import useDimensions from "./hooks/useDimensions"; // Ensure this path is correct
 import Image from "next/image";
 import { Badge } from "./ui/badge";
 import { formatDate } from "date-fns";
 
+// The interface for props, which now implicitly includes 'ref' because of forwardRef
 interface ResumePreviewsProps {
   resumeData: resumeSchemaType;
   className?: string;
 }
 
-const ResumePreviews = ({ resumeData, className }: ResumePreviewsProps) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+// Wrap your component with forwardRef
+const ResumePreviews = forwardRef<HTMLDivElement, ResumePreviewsProps>(
+  ({ resumeData, className }, ref) => {
+    // <--- Receive 'ref' as the second argument
+    // Use an internal ref for useDimensions if you need to measure the outer container
+    const containerRefForDimensions = useRef<HTMLDivElement>(null);
 
-  const { width } = useDimensions(containerRef);
+    // The useDimensions hook needs a stable ref to watch.
+    // Attach it to the main responsive container.
+    const { width } = useDimensions(containerRefForDimensions);
 
-  return (
-    <div
-      className={cn("aspect-[210/297] w-full bg-white text-black", className)}
-      ref={containerRef}
-    >
+    return (
       <div
-        className={cn("space-y-6 p-6", !width && "invisible")}
-        style={{
-          zoom: (1 / 794) * width,
-        }}
+        // Apply the internal ref for useDimensions to the outermost div
+        ref={containerRefForDimensions}
+        className={cn("aspect-[210/297] w-full bg-white text-black", className)}
       >
-        {/* <pre className="p-4 text-xs">{JSON.stringify(resumeData, null, 2)}</pre> */}
-        <PersonalInfoHeader resumeData={resumeData} />
-        <SummarySection resumeData={resumeData} />
-        <WorkExperienceSection resumeData={resumeData} />
-        <EducationSection resumeData={resumeData} />
-        <SkillsSection resumeData={resumeData} />
+        <div
+          // This is the div that useReactToPrint will target.
+          // Apply the `ref` received from forwardRef here.
+          ref={ref} // <--- CRUCIAL FIX: Apply the print ref here!
+          id="resumePreviewContent" // Keep ID if needed for other purposes
+          className={cn("space-y-6 p-6", !width && "invisible")}
+          style={{
+            zoom: (1 / 794) * width, // This div gets the zoom styling
+          }}
+        >
+          {/* All your resume content goes inside this div */}
+          <PersonalInfoHeader resumeData={resumeData} />
+          <SummarySection resumeData={resumeData} />
+          <WorkExperienceSection resumeData={resumeData} />
+          <EducationSection resumeData={resumeData} />
+          <SkillsSection resumeData={resumeData} />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  },
+);
 
+ResumePreviews.displayName = "ResumePreviews"; // Good practice for forwardRef components
 export default ResumePreviews;
 
+// --- Your existing sub-components (PersonalInfoHeader, SummarySection, etc.) ---
+// Make sure to include them below the ResumePreviews component
 interface ResumeSectionProps {
   resumeData: resumeSchemaType;
 }
@@ -239,7 +255,7 @@ function EducationSection({ resumeData }: ResumeSectionProps) {
                 </span>
               )}
             </div>
-            <p className="text-xs font-semibold">{edu.college}</p>
+            <p className="text-xs font-semibold">{edu.school}</p>
           </div>
         ))}
       </div>
@@ -281,7 +297,8 @@ function SkillsSection({ resumeData }: ResumeSectionProps) {
                     ? "0px"
                     : borderStyle === BorderStyles.CIRCLE
                       ? "9999px"
-                      : "8px",
+                      : // ? "9999px" // This is a typo. Should be "9999px" only once
+                      "8px",
               }}
             >
               {skill}

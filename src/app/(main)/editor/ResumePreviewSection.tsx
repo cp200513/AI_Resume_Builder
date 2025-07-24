@@ -1,3 +1,4 @@
+import React, { RefObject } from "react"; // <--- Ensure RefObject is imported
 import ResumePreviews from "@/components/ResumePreviews";
 import { cn } from "@/lib/utils";
 import { resumeSchemaType } from "@/lib/validation";
@@ -8,12 +9,14 @@ interface ResumePreviewSectionProps {
   resumeData: resumeSchemaType;
   setResumeData: (data: resumeSchemaType) => void;
   className?: string;
+  contentRef?: RefObject<HTMLDivElement | null>; // <--- ADD THIS LINE
 }
 
 export default function ResumePreviewSection({
   resumeData,
   setResumeData,
   className,
+  contentRef, // <--- Destructure the prop here as well
 }: ResumePreviewSectionProps) {
   return (
     <div className={cn("group relative hidden w-full md:flex", className)}>
@@ -32,9 +35,11 @@ export default function ResumePreviewSection({
         />
       </div>
       <div className="bg-secondary flex w-full items-center justify-center overflow-auto p-3">
+        {/* Pass the ref to the ResumePreviews component (which should be forwardRefed) */}
         <ResumePreviews
           resumeData={resumeData}
           className="max-w-2xl shadow-md"
+          ref={contentRef} // <--- Pass it down to ResumePreviews
         />
       </div>
     </div>

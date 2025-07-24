@@ -7,7 +7,7 @@ export const generalInfoSchema = z.object({
   description: optionalString,
 });
 
-export const generalInfoSchemaType = z.infer<typeof generalInfoSchema>;
+export type generalInfoSchemaType = z.infer<typeof generalInfoSchema>;
 
 export const personalInfoSchema = z.object({
   photo: z
@@ -30,7 +30,7 @@ export const personalInfoSchema = z.object({
   email: optionalString,
 });
 
-export const personalInfoSchemaType = z.infer<typeof personalInfoSchema>;
+export type personalInfoSchemaType = z.infer<typeof personalInfoSchema>;
 
 export const workExperienceSchema = z.object({
   workExperiences: z
@@ -80,14 +80,21 @@ export const summarySchema = z.object({
 export type summarySchemaType = z.infer<typeof summarySchema>;
 
 export const resumeSchema = z.object({
+  // Spread existing schema shapes
   ...generalInfoSchema.shape,
   ...personalInfoSchema.shape,
   ...workExperienceSchema.shape,
   ...educationSchema.shape,
   ...skillsSchema.shape,
   ...summarySchema.shape,
+  // Add properties directly from the Resume model that are not in sub-schemas
+  colorHex: z.string().default("#000000"), // <--- ADD THIS
+  borderStyle: z.string().default("squircle"), // <--- ADD THIS
 });
 
+// Now resumeSchemaType will correctly include colorHex and borderStyle
+// Also, the Omit<..., "photo"> is generally used if you're replacing the photo type
+// which you are doing.
 export type resumeSchemaType = Omit<z.infer<typeof resumeSchema>, "photo"> & {
   id?: string;
   photo?: null | string | File;

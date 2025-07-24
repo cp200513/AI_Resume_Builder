@@ -1,9 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  generalInfoSchemaType,
-  generalInfoSchema,
-} from "../../../../lib/validation";
+// We import generalInfoSchema (the Zod value)
+// We will infer the type from it using z.infer
+import { generalInfoSchema } from "../../../../lib/validation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,9 +17,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { EditorFormProps } from "../../../../lib/types";
 import { useEffect } from "react";
+import * as z from "zod"; // <--- IMPORT ZOD HERE
+
+// Infer the TypeScript type from your Zod schema
+type GeneralInfoFormValues = z.infer<typeof generalInfoSchema>; // <--- DEFINE THE INFERRED TYPE HERE
 
 const GeneralInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
-  const form = useForm<generalInfoSchemaType>({
+  // Use the inferred type for useForm
+  const form = useForm<GeneralInfoFormValues>({
+    // <--- MODIFIED HERE
     resolver: zodResolver(generalInfoSchema),
     defaultValues: {
       title: resumeData.title || "",
@@ -32,7 +37,9 @@ const GeneralInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
 
   useEffect(() => {
     const { unsubscribe } = form.watch((values) => {
-      setResumeData({ ...resumeData, ...values });
+      // Ensure 'values' matches the shape expected by setResumeData for partial updates
+      // This cast might be needed if resumeData has more fields than generalInfoSchemaType
+      setResumeData({ ...resumeData, ...(values as any) }); // Consider making resumeData's type more specific
     });
     return unsubscribe;
   }, [form, resumeData, setResumeData]);
@@ -68,7 +75,7 @@ const GeneralInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
               )}
             />
             <FormField
-              {...form}
+              // Removed redundant {...form} as control is already passed
               control={form.control}
               name="description"
               render={({ field }) => (
@@ -80,6 +87,7 @@ const GeneralInfoForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />

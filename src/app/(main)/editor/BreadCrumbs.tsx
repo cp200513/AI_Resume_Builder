@@ -11,7 +11,7 @@ import React from "react";
 
 interface BreadCrumbProps {
   currentStep: string;
-  setCurrentStep: (step, string) => void;
+  setCurrentStep: (step: string) => void;
 }
 //serCurrentStep is passed by the parent component , that's its not been defined here
 const BreadCrumbs = ({ currentStep, setCurrentStep }: BreadCrumbProps) => {

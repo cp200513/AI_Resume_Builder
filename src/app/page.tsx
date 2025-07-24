@@ -1,7 +1,7 @@
-import logo from "@/assets/logo.png";
-import hero1 from "@/assets/hero1.webp";
-import hero2 from "@/assets/hero2.jpg";
-import hero3 from "@/assets/hero3.jpg";
+import logo from "../assets/logo.png";
+import hero1 from "../assets/hero1.webp";
+import hero2 from "../assets/hero2.jpg";
+import hero3 from "../assets/hero3.jpg";
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -54,7 +54,7 @@ export default function Home() {
               Our <span className="font-bold">AI resume builder</span> helps you
               design a professional resume, even if you&apos;re not very smart.
             </p>
-            <Button asChild size="lg" variant="premium">
+            <Button asChild size="lg" variant="default">
               <Link href="/resumes">Get started</Link>
             </Button>
           </div>

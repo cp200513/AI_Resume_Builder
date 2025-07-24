@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "../src/generated/prisma" // Ensure this path is correct for your project structure
 }
 
 // prisma/schema.prisma
@@ -17,7 +17,7 @@ datasource db {
 
 model Resume {
   id     String @id @default(cuid())
-  userId String
+  userId String // Assuming a user ID field for linking to a user (e.g., Clerk ID)
 
   title       String
   description String
@@ -27,7 +27,7 @@ model Resume {
   borderStyle String  @default("squircle")
 
   summary   String?
-  firstName String? //@@map("first_name") can also map like this
+  firstName String?
   lastName  String?
 
   jobTitle String?
@@ -36,16 +36,15 @@ model Resume {
   phone    String?
   email    String?
 
-  workExperiences WorkExperience[]
-  educations      Education[]
+  workExperiences WorkExperience[] // Relation to WorkExperience model
+  educations      Education[] // Relation to Education model
 
-  skills String[]
+  skills String[] // Assuming this is an array of strings for skills
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  //we can also map column names also
 
-  @@map("resumes") //Postgres Sql's naming convention is all small but of Prisma is like (1) so we map that name to this 
+  @@map("resumes") // Maps the Prisma model name "Resume" to the database table name "resumes"
 }
 
 model WorkExperience {
@@ -57,13 +56,13 @@ model WorkExperience {
   endDate     String?
   description String?
 
-  resumeID String
-  resume   Resume @relation(fields: [resumeID], references: [id])
+  resumeID String // Foreign key to the Resume model
+  resume   Resume @relation(fields: [resumeID], references: [id], onDelete: Cascade) // onDelete: Cascade ensures related WorkExperiences are deleted when a Resume is deleted
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("work_experience")
+  @@map("work_experience") // Maps to the database table name "work_experience"
 }
 
 model Education {
@@ -71,14 +70,14 @@ model Education {
 
   degree    String?
   school    String?
-  startDate DateTime?
-  endDate   DateTime?
+  startDate DateTime? // Changed to DateTime? as you have it in Resume model
+  endDate   DateTime? // Changed to DateTime? as you have it in Resume model
 
-  resumeID String
-  resume   Resume @relation(fields: [resumeID], references: [id])
+  resumeID String // Foreign key to the Resume model
+  resume   Resume @relation(fields: [resumeID], references: [id], onDelete: Cascade) // <--- CRUCIAL FIX: Added onDelete: Cascade
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("educations")
+  @@map("educations") // Maps to the database table name "educations"
 }
