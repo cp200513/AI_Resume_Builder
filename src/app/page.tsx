@@ -51,8 +51,9 @@ export default function Home() {
             <p className="text-lg text-gray-500 dark:text-gray-400">
               {" "}
               {/* <--- MODIFIED HERE */}
-              Our <span className="font-bold">AI resume builder</span> helps you
-              design a professional resume, even if you&apos;re not very smart.
+              Struggling to Stand out ? Let{" "}
+              <span className="font-bold">Career Craft AI</span> help you
+              rewrite your Resume Story.
             </p>
             <Button asChild size="lg" variant="default">
               <Link href="/resumes">Get started</Link>
@@ -102,19 +103,13 @@ export default function Home() {
         <footer className="mt-auto w-full bg-gray-800 px-5 py-6 text-center text-gray-300">
           <p>&copy; {new Date().getFullYear()} Developed By Chiranjeev</p>
           <p className="mt-2 text-sm">
-            <Link
-              href="https://github.com/cp200513"
-              className="mx-2 hover:underline"
-            >
-              GitHub
-            </Link>
-            |
-            <Link
-              href="https://github.com/cp200513/AI_Resume_Builder.git"
-              className="mx-2 hover:underline"
+            <span>GitHub</span>|
+            <span
+            // href="https://github.com/cp200513/AI_Resume_Builder.git"
+            // className="mx-2 hover:underline"
             >
               Feel Free to Contribute
-            </Link>
+            </span>
           </p>
         </footer>
       </div>{" "}
