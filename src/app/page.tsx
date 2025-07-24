@@ -103,12 +103,12 @@ export default function Home() {
         <footer className="mt-auto w-full bg-gray-800 px-5 py-6 text-center text-gray-300">
           <p>&copy; {new Date().getFullYear()} Developed By Chiranjeev</p>
           <p className="mt-2 text-sm">
-            <span>GitHub</span>|
+            <span>All Rights</span>|
             <span
             // href="https://github.com/cp200513/AI_Resume_Builder.git"
             // className="mx-2 hover:underline"
             >
-              Feel Free to Contribute
+              Yet to be Reserved
             </span>
           </p>
         </footer>
